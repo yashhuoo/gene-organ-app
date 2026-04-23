@@ -67,3 +67,13 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+import os
+import uvicorn
+
+# ... your other code ...
+
+if __name__ == "__main__":
+    # This reads the port Railway provides, or defaults to 8000
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
