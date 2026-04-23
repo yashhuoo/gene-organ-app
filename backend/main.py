@@ -62,18 +62,14 @@ def search_articles(
     }
 
 
+
+@app.get("/")
+def read_root():
+    return {"message": "Genomic API is Running"}
+
 if __name__ == "__main__":
     import uvicorn
-
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-
-import os
-import uvicorn
-
-# ... (all your other code remains the same) ...
-
-if __name__ == "__main__":
-    # Railway provides a dynamic port via environment variables
+    import os
+    # This allows Railway to tell the app which port to use
     port = int(os.environ.get("PORT", 8000))
-    # We must bind to 0.0.0.0 so the outside world can reach it
     uvicorn.run(app, host="0.0.0.0", port=port)
