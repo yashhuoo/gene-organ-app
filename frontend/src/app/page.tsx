@@ -15,9 +15,8 @@ type SearchResponse = {
   results: PubMedResult[];
 };
 
+// This uses your Railway URL if it exists, otherwise defaults to local
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-const handleSearch = async () => {
-  const response = await fetch(`${API_BASE_URL}/search?gene=${searchTerm}`);
 
 export default function HomePage() {
   const [gene, setGene] = useState("");
@@ -45,6 +44,7 @@ export default function HomePage() {
     setLoading(true);
 
     try {
+      // Correctly constructing the URL for your Railway/Local backend
       const url = new URL(`${API_BASE_URL}/search`);
       url.searchParams.set("gene", normalizedGene);
 
@@ -63,9 +63,7 @@ export default function HomePage() {
   };
 
   const fetchResultsForOrgan = async (organ: string, page: number) => {
-    if (!submittedGene) {
-      return;
-    }
+    if (!submittedGene) return;
 
     setSelectedOrgan(organ);
     setCurrentPage(page);
@@ -94,18 +92,12 @@ export default function HomePage() {
   };
 
   const handleNextPage = () => {
-    if (!selectedOrgan) {
-      return;
-    }
-
+    if (!selectedOrgan) return;
     fetchResultsForOrgan(selectedOrgan, currentPage + 1);
   };
 
   const handlePreviousPage = () => {
-    if (!selectedOrgan || currentPage === 0) {
-      return;
-    }
-
+    if (!selectedOrgan || currentPage === 0) return;
     fetchResultsForOrgan(selectedOrgan, currentPage - 1);
   };
 
@@ -127,7 +119,7 @@ export default function HomePage() {
             disabled={loading}
             className="rounded-r-lg bg-blue-900 px-6 py-4 text-white transition hover:bg-blue-800 disabled:opacity-60"
           >
-            Search
+            {loading ? "Searching..." : "Search"}
           </button>
         </form>
 
@@ -147,7 +139,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {error && <p className="mb-4 text-red-600">{error}</p>}
+        {error && <p className="mb-4 text-red-600 font-medium">{error}</p>}
 
         {!!submittedGene && !!selectedOrgan && (
           <h2 className="mb-4 text-xl font-semibold text-slate-900">
@@ -161,11 +153,11 @@ export default function HomePage() {
             className="mb-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
           >
             <h3 className="text-lg font-semibold text-slate-900">{result.title}</h3>
-            <p className="mt-2 text-slate-500">PMID: {result.id}</p>
+            <p className="mt-2 text-slate-500 font-mono text-sm">PMID: {result.id}</p>
           </article>
         ))}
 
-        {!!selectedOrgan && (
+        {!!selectedOrgan && results.length > 0 && (
           <div className="mt-4 flex items-center justify-end gap-3">
             <button
               type="button"
@@ -188,5 +180,4 @@ export default function HomePage() {
       </section>
     </main>
   );
-}
 }
