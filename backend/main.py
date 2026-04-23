@@ -10,7 +10,7 @@ app = FastAPI(title="Backend API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[*],
+    allow_origins=["*""],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -68,9 +68,10 @@ if __name__ == "__main__":
 import os
 import uvicorn
 
-# ... your other code ...
+# ... (all your other code remains the same) ...
 
 if __name__ == "__main__":
-    # This reads the port Railway provides, or defaults to 8000
+    # Railway provides a dynamic port via environment variables
     port = int(os.environ.get("PORT", 8000))
+    # We must bind to 0.0.0.0 so the outside world can reach it
     uvicorn.run(app, host="0.0.0.0", port=port)
