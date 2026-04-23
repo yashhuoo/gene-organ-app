@@ -8,6 +8,8 @@ from pubmed_service import search_pubmed
 
 app = FastAPI(title="Backend API")
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
