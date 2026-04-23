@@ -16,7 +16,7 @@ type SearchResponse = {
 };
 
 // This uses your Railway URL if it exists, otherwise defaults to local
-const API_BASE_URL = "http://gene-organ-app-production.up.railway.app";
+const API_BASE_URL = "https://gene-organ-app-production.up.railway.app";
 
 export default function HomePage() {
   const [gene, setGene] = useState("");
